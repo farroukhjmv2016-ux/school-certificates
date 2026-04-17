@@ -71,8 +71,8 @@ if adm_no:
 
             # Try stylish fonts (replace with any .ttf you have, e.g. 'GreatVibes-Regular.ttf')
             try:
-                font_name = ImageFont.truetype("arial.ttf", 48)   # bigger stylish font for name
-                font_class = ImageFont.truetype("arial.ttf", 36)  # slightly smaller for class
+                font_name = ImageFont.truetype("fonts/GreatVibes-Regular.ttf", 40)   # bigger stylish font for name
+                font_class = ImageFont.truetype("fonts/arial.ttf", 36)  # slightly smaller for class
             except:
                 font_name = ImageFont.load_default()
                 font_class = ImageFont.load_default()
