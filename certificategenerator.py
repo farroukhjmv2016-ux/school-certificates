@@ -11,20 +11,30 @@ st.set_page_config(page_title="Certificate Portal", layout="centered")
 # ===============================
 # ADVANCED UI STYLING (CSS)
 # ===============================
+# ===============================
+# ADVANCED UI STYLING (CSS)
+# ===============================
 st.markdown("""
     <style>
-    /* Main background */
+    /* 1. HIDE MANAGE APP, TOOLBAR, AND HEADER */
+    header, [data-testid="stHeader"], .stAppHeader, #MainMenu, footer {
+        visibility: hidden;
+        height: 0;
+        display: none;
+    }
+
+    /* 2. Main background */
     .stApp {
         background-color: #f8f9fa;
     }
     
-    /* Title Styling */
+    /* 3. Title Styling */
     .main-title {
         text-align: center;
         font-size: 38px;
         font-weight: 800;
         color: #1a365d;
-        margin-top: -40px;
+        margin-top: -80px; /* Moves content up to fill the gap left by the hidden header */
     }
     
     .main-subtitle {
@@ -34,7 +44,7 @@ st.markdown("""
         margin-bottom: 30px;
     }
 
-    /* HOVER REVEAL FOOTER */
+    /* 4. HOVER REVEAL FOOTER */
     .hover-footer {
         position: fixed;
         bottom: 0;
@@ -71,7 +81,7 @@ st.markdown("""
         margin: 0;
     }
 
-    /* Professional Button */
+    /* 5. Professional Button */
     div.stButton > button {
         width: 100%;
         border-radius: 6px;
