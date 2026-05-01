@@ -12,15 +12,25 @@ st.set_page_config(page_title="Certificate Portal", layout="centered")
 # ADVANCED UI STYLING (CSS)
 # ===============================
 # ===============================
-# ADVANCED UI STYLING (CSS)
+# FINAL OVERRIDE UI STYLING (CSS)
 # ===============================
 st.markdown("""
     <style>
-    /* 1. HIDE MANAGE APP, TOOLBAR, AND HEADER */
+    /* 1. FORCE HIDE ALL STREAMLIT OVERLAYS */
     header, [data-testid="stHeader"], .stAppHeader, #MainMenu, footer {
-        visibility: hidden;
-        height: 0;
-        display: none;
+        visibility: hidden !important;
+        height: 0 !important;
+        display: none !important;
+    }
+    
+    /* Target the specific toolbar at the bottom right/left */
+    [data-testid="stStatusWidget"], [data-testid="stToolbar"], .st-emotion-cache-18ni7ap {
+        display: none !important;
+    }
+
+    /* Target the specific 'Manage app' button container if it persists */
+    div[class^="st-emotion-cache"] > button[title="Manage app"] {
+        display: none !important;
     }
 
     /* 2. Main background */
@@ -34,7 +44,7 @@ st.markdown("""
         font-size: 38px;
         font-weight: 800;
         color: #1a365d;
-        margin-top: -80px; /* Moves content up to fill the gap left by the hidden header */
+        margin-top: -100px; /* Pulls content up since the header is removed */
     }
     
     .main-subtitle {
@@ -93,7 +103,8 @@ st.markdown("""
     }
     
     div.stButton > button:hover {
-        background-color: #1a365d;
+        background-color: #1a365d !important;
+        color: white !important;
     }
 
     .content-spacer {
@@ -101,7 +112,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
 # App Headers
 st.markdown('<div class="main-title">Jain Bharati Mrigavati Vidyalaya</div>', unsafe_allow_html=True)
 st.markdown('<div class="main-subtitle">🏆 Certificate Download Portal</div>', unsafe_allow_html=True)
