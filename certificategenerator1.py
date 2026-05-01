@@ -35,14 +35,9 @@ st.markdown('<div class="subtitle">Enter your Admission Number to download your 
 # ===============================
 @st.cache_data
 def load_data():
-    # Ensure the file exists in the same directory
-    try:
-        df = pd.read_excel("winners.xlsx")
-        df["Admission_Number"] = df["Admission_Number"].astype(str)
-        return df
-    except Exception as e:
-        st.error(f"Error loading Excel file: {e}")
-        return pd.DataFrame()
+    df = pd.read_excel("winners.xlsx")
+    df["Admission_Number"] = df["Admission_Number"].astype(str)
+    return df
 
 data = load_data()
 
@@ -53,7 +48,7 @@ adm_no = st.text_input("🔍 Enter Admission Number")
 
 # Auto-suggestions
 if adm_no:
-    suggestions = data[data["Admission_Number"].str.contains(adm_no, na=False)]
+    suggestions = data[data["Admission_Number"].str.contains(adm_no)]
     
     if not suggestions.empty:
         selected = st.selectbox(
@@ -71,42 +66,33 @@ if adm_no:
             # ===============================
             # LOAD TEMPLATE
             # ===============================
-            try:
-                image = Image.open("certificate_template.jpeg")
-                draw = ImageDraw.Draw(image)
-            except Exception as e:
-                st.error("Template file 'certificate_template.jpeg' not found.")
-                st.stop()
+            image = Image.open("certificate_template.jpeg")
+            draw = ImageDraw.Draw(image)
 
-            # Try stylish fonts
+            # Try stylish fonts (replace with any .ttf you have, e.g. 'GreatVibes-Regular.ttf')
             try:
-                font_name = ImageFont.truetype("fonts/AlexBrush-Regular.ttf", 40)
-                #font_class = ImageFont.truetype("fonts/AlexBrush-Regular.ttf", 36)
-                font_class = ImageFont.truetype("fonts/arial.ttf", 32)
+                font_name = ImageFont.truetype("fonts/GreatVibes-Regular.ttf", 40)   # bigger stylish font for name
+                font_class = ImageFont.truetype("fonts/arial.ttf", 36)  # slightly smaller for class
             except:
                 font_name = ImageFont.load_default()
                 font_class = ImageFont.load_default()
 
             # ===============================
-            # VALUES (FIXED CAPITALIZATION)
+            # VALUES (Stylized)
             # ===============================
-            # Using list comprehension to ensure every word is capitalized 
-            # and removing leading/trailing hidden spaces.
-            raw_name = str(user["Name"]).strip()
-            formatted_name = " ".join([word.capitalize() for word in raw_name.split()])
-            
             values = {
-                "NAME": formatted_name,
-                "CLASS": str(user["Class"]).upper().strip()
+                "NAME": user["Name"].title(),   # Capitalize each word
+                "CLASS": user["Class"].upper()  # Full caps
             }
 
             # ===============================
             # DRAW TEXT (ALIGN TO LINES)
             # ===============================
-            y_name_line = 370   
-            y_class_line = 415  
+            # Adjust these Y positions to match your dashed and solid lines
+            y_name_line = 370   # <-- replace with dashed line Y coordinate
+            y_class_line = 415  # <-- replace with solid line Y coordinate
 
-            # Custom X offset (keep as per your original design)
+            # Custom X offset (shift text left by 100px for style)
             x_offset = -100
 
             # NAME on dashed line
@@ -130,15 +116,15 @@ if adm_no:
 
             st.success("✅ Certificate Generated Successfully!")
 
-            # Show preview
-            st.image(byte_im, caption="Certificate Preview", width=700)
+            # Show preview (fixed warning: use width instead of use_column_width)
+            st.image(byte_im, caption="Certificate Preview", width=image.width)
 
             # Download button
             st.download_button(
                 label="📥 Download Certificate",
                 data=byte_im,
-                file_name=f"Certificate_{selected_adm}.jpg",
-                mime="image/jpeg"
+                file_name=f"Certificate_{selected_adm}.jpeg",
+                mime="image/png"
             )
 
     else:
